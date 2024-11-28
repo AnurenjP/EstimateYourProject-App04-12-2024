@@ -270,3 +270,8 @@ tfoot td {
     .optional-budget h3 {
         margin-top: 20px;
     }
+.total-cost-display {
+    font-weight: bold;
+    text-align: right;
+    font-size: 1.5em; /* Adjust the font size as needed */
+}

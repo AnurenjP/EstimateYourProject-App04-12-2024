@@ -10,7 +10,7 @@
 
     public class Resource
     {
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty; 
         public float Cost { get; set; }
         public int NumberOfResources { get; set; }
         public float Total => Cost * NumberOfResources;
