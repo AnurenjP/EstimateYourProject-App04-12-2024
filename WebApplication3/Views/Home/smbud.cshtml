@@ -36,6 +36,7 @@
                 totalCost += total;
             });
             document.querySelector('tfoot .total-cell').innerText = totalCost.toFixed(2);
+            document.getElementById('totalCostDisplay').innerText = `Total Cost: ₹${totalCost.toFixed(2)}`;
         }
 
         function setupRealTimeCalculation() {
@@ -116,6 +117,38 @@
                     console.error('Error generating files:', response.statusText);
                 }
             }
+
+        function addNewRow() {
+            var table = document.getElementById('hardwareSoftwareTable').getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow();
+
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+            var cell4 = newRow.insertCell(3);
+            var cell5 = newRow.insertCell(4);
+
+            var select = document.createElement('select');
+            select.className = 'editable-cell';
+            var option1 = document.createElement('option');
+            option1.value = 'Hardware Cost';
+            option1.text = 'Hardware Cost';
+            var option2 = document.createElement('option');
+            option2.value = 'Software Cost';
+            option2.text = 'Software Cost';
+            select.appendChild(option1);
+            select.appendChild(option2);
+
+            cell1.appendChild(select);
+            cell2.innerHTML = '<input type="text" class="editable-input tool-name">';
+            cell3.innerHTML = '<input type="text" class="editable-input cost">';
+            cell4.innerHTML = '<input type="text" class="editable-input number-of-resources">';
+            cell5.innerHTML = '<span class="total total-cell"></span>';
+
+            table.appendChild(newRow);
+
+            setupRealTimeCalculation();
+        }
     </script>
 </head>
 <body>
@@ -133,75 +166,75 @@
             <tbody>
                 <tr>
                     <td class="editable-cell">Delivery Manager</td>
-                    <td><input type="text" class="editable-input cost" value="200"></td>
+                    <td><input type="text" class="editable-input cost" value=""></td>
                     <td><input type="text" class="editable-input number-of-resources" name="deliveryManager" value="1"></td>
                     <td class="total total-cell"></td>
                 </tr>
                 <tr>
                     <td class="editable-cell">Senior Manager</td>
-                    <td><input type="text" class="editable-input cost" value="150"></td>
+                    <td><input type="text" class="editable-input cost" value=""></td>
                     <td><input type="text" class="editable-input number-of-resources" name="seniorManager" value="1"></td>
                     <td class="total total-cell"></td>
                 </tr>
                 <tr>
                     <td class="editable-cell">Manager</td>
-                    <td><input type="text" class="editable-input cost" value="100"></td>
+                    <td><input type="text" class="editable-input cost" value=""></td>
                     <td><input type="text" class="editable-input number-of-resources" name="manager" value="1"></td>
                     <td class="total total-cell"></td>
                 </tr>
                 <tr>
                     <td class="editable-cell">Project Lead</td>
-                    <td><input type="text" class="editable-input cost" value="90"></td>
+                    <td><input type="text" class="editable-input cost" value=""></td>
                     <td><input type="text" class="editable-input number-of-resources" name="projectLead" value="1"></td>
                     <td class="total total-cell"></td>
                 </tr>
                 <tr>
                     <td class="editable-cell">Dev Team Lead</td>
-                    <td><input type="text" class="editable-input cost" value="80"></td>
+                    <td><input type="text" class="editable-input cost" value=""></td>
                     <td><input type="text" class="editable-input number-of-resources" name="devTeamLead" value="1"></td>
                     <td class="total total-cell"></td>
                 </tr>
                 <tr>
                     <td class="editable-cell">Senior Developer</td>
-                    <td><input type="text" class="editable-input cost" value="70"></td>
+                    <td><input type="text" class="editable-input cost" value=""></td>
                     <td><input type="text" class="editable-input number-of-resources" name="seniorDeveloper" value="1"></td>
                     <td class="total total-cell"></td>
                 </tr>
                 <tr>
                     <td class="editable-cell">Developer</td>
-                    <td><input type="text" class="editable-input cost" value="50"></td>
+                    <td><input type="text" class="editable-input cost" value=""></td>
                     <td><input type="text" class="editable-input number-of-resources" name="developer" value="5"></td>
                     <td class="total total-cell"></td>
                 </tr>
                 <tr>
                     <td class="editable-cell">QA Team Lead</td>
-                    <td><input type="text" class="editable-input cost" value="70"></td>
+                    <td><input type="text" class="editable-input cost" value=""></td>
                     <td><input type="text" class="editable-input number-of-resources" name="qaTeamLead" value="1"></td>
                     <td class="total total-cell"></td>
                 </tr>
                 <tr>
                     <td class="editable-cell">Senior Tester</td>
-                    <td><input type="text" class="editable-input cost" value="70"></td>
+                    <td><input type="text" class="editable-input cost" value=""></td>
                     <td><input type="text" class="editable-input number-of-resources" name="seniorTester" value="1"></td>
                     <td class="total total-cell"></td>
                 </tr>
                 <tr>
                     <td class="editable-cell">Tester</td>
-                    <td><input type="text" class="editable-input cost" value="50"></td>
+                    <td><input type="text" class="editable-input cost" value=""></td>
                     <td><input type="text" class="editable-input number-of-resources" name="tester" value="2"></td>
                     <td class="total total-cell"></td>
                 </tr>
                 <tr>
                     <td class="editable-cell">Deployment Team</td>
-                    <td><input type="text" class="editable-input cost" value="50"></td>
+                    <td><input type="text" class="editable-input cost" value=""></td>
                     <td><input type="text" class="editable-input number-of-resources" name="deploymentTeam" value="2"></td>
                     <td class="total total-cell"></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3">Total cost of Resources</td>
-                    <td class="total-cell"></td>
+                    <td colspan="3"><td>
+                    <td class="total-cell hidden"></td>
                 </tr>
             </tfoot>
         </table>
@@ -209,10 +242,11 @@
         <button class="btn-optional-budget" onclick="toggleOptionalBudget()">Show Optional Budget</button>
 
         <div id="optionalBudget" class="optional-budget">
-            <h3>2. Hardware and Software Costs</h3>
-            <table>
+            <h3>Hardware and Software Costs</h3>
+            <table id="hardwareSoftwareTable">
                 <thead>
                     <tr>
+                        <th>Type of the Resource</th>
                         <th>Name of the Tool</th>
                         <th>Cost</th>
                         <th>Number of Resources</th>
@@ -222,22 +256,32 @@
                 <tbody>
                     <tr>
                         <td class="editable-cell">Hardware Cost</td>
+                        <td><input type="text" class="editable-input tool-name"></td>
                         <td><input type="text" class="editable-input cost"></td>
                         <td><input type="text" class="editable-input number-of-resources"></td>
                         <td class="total total-cell"></td>
                     </tr>
                     <tr>
                         <td class="editable-cell">Software Cost</td>
+                        <td><input type="text" class="editable-input tool-name"></td>
                         <td><input type="text" class="editable-input cost"></td>
                         <td><input type="text" class="editable-input number-of-resources"></td>
                         <td class="total total-cell"></td>
                     </tr>
                 </tbody>
             </table>
+            <tr>
+                <select id="resourceType">
+                    <option value="Hardware Cost">Hardware Cost</option>
+                    <option value="Software Cost">Software Cost</option>
+                </select>
+                <button class="btn-add-row" onclick="addNewRow()">Add New</button>
+            </tr>
 
-            <h3>3. Additional Costs</h3>
+            <h3>Additional Costs</h3>
             <table>
                 <thead>
+                        
                     <tr>
                         <th>Additional Resource</th>
                         <th>Cost</th>
@@ -273,7 +317,7 @@
                 </tbody>
             </table>
 
-            <h3>4. Variable/Fixed Costs</h3>
+            <h3>Variable/Fixed Costs</h3>
             <table>
                 <thead>
                     <tr>
@@ -305,6 +349,7 @@
                 </tbody>
             </table>
         </div>
+        <div id="totalCostDisplay" class="total-cost-display">Total Cost: ₹0.00</div>
 
         <button class="btn-sample-budget" onclick="generateBudget()">Generate Budget</button>
         <div id="downloadLinks"></div>

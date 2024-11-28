@@ -226,7 +226,9 @@ th, td {
     text-align: left;
     font-family: monospace; /* Monospace font for proper alignment */
 }
-
+.hidden {
+    display: none;
+}
 th {
     background-color: #f2f2f2;
 }
