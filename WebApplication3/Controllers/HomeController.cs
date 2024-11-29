@@ -100,7 +100,7 @@ namespace ProjectEstimationApp.Controllers
                     worksheet.Cells[1, 4].Value = "Total";
 
                     int row = 2;
-                    foreach (var resource in projectData.Resources)
+                    foreach (var resource in projectData.Resources.Take(11))
                     {
                         worksheet.Cells[row, 1].Value = resource.Name;
                         worksheet.Cells[row, 2].Value = resource.Cost;
