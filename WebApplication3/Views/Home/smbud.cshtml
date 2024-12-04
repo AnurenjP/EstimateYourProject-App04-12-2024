@@ -64,6 +64,8 @@
             calculateTotalCostOfResources();
         }
 
+       
+
         document.addEventListener('DOMContentLoaded', function () {
             populateResources();
             setupRealTimeCalculation();
@@ -82,6 +84,34 @@
                 const projectStartDate = localStorage.getItem('projectStartDate');
                 const projectEndDate = localStorage.getItem('projectEndDate');
 
+                 const Analysisandrequirementsignoff =parseFloat(localStorage.getItem('Analysisandrequirementsignoff')) || 0;
+                 
+        const FunctionalDesign = parseFloat(localStorage.getItem('FunctionalDesign')) || 0;
+        const TechnicalDesign = parseFloat(localStorage.getItem('TechnicalDesign')) || 0;
+
+        const AnalysisandDesign1 = parseFloat(localStorage.getItem('AnalysisandDesign')) || 0;
+        const Frontendchanges = parseFloat(localStorage.getItem('Frontendchanges')) || 0;
+        const IntegrationChanges = parseFloat(localStorage.getItem('IntegrationChanges')) || 0;
+        const BackendChanges = parseFloat(localStorage.getItem('BackendChanges')) || 0;
+        const Coding = parseFloat(localStorage.getItem('Coding')) || 0;
+        const UnitTestCasePreparation = parseFloat(localStorage.getItem('UnitTestCasePreparation')) || 0;
+        const UnittestlogsandDefectFix = parseFloat(localStorage.getItem('UnittestlogsandDefectFix')) || 0;
+        const CodeReview = parseFloat(localStorage.getItem('CodeReview')) || 0;
+        const UnitTestCaseReview = parseFloat(localStorage.getItem('UnitTestCaseReview')) || 0;
+        const UnittestResultReview = parseFloat(localStorage.getItem('UnittestResultReview')) || 0;
+        const UnitTesting = parseFloat(localStorage.getItem('UnitTesting')) || 0;
+        const QAandTestResultReview = parseFloat(localStorage.getItem('QAandTestResultReview')) || 0;
+        const QAandUATSupport = parseFloat(localStorage.getItem('QAandUATSupport')) || 0;
+        const QATestCasePreparation = parseFloat(localStorage.getItem('QATestCasePreparation')) || 0;
+        const QATestingandDefectFix = parseFloat(localStorage.getItem('QATestingandDefectFix')) || 0;
+        const IntegrationTesting = parseFloat(localStorage.getItem('IntegrationTesting')) || 0;
+        const UATTestingandDefectFix = parseFloat(localStorage.getItem('UATTestingandDefectFix')) || 0;
+        const QAandUATTesting = parseFloat(localStorage.getItem('QAandUATTesting')) || 0;
+        const Releasemanagement = parseFloat(localStorage.getItem('Releasemanagement')) || 0;
+        const DeploymentSupport = parseFloat(localStorage.getItem('DeploymentSupport')) || 0;
+        const WarrantySupport = parseFloat(localStorage.getItem('WarrantySupport')) || 0;
+        const Support = parseFloat(localStorage.getItem('Support')) || 0;
+
                 const additionalCosts = [];
                 document.querySelectorAll('#optionalBudget tbody tr').forEach(row => {
                     const name = row.querySelector('.editable-cell').innerText;
@@ -99,7 +129,33 @@
                         resources,
                         projectStartDate,
                         projectEndDate,
-                        additionalCosts
+                        additionalCosts,
+                        Analysisandrequirementsignoff,
+                        FunctionalDesign,
+                        TechnicalDesign,
+                        AnalysisandDesign1,
+                        Frontendchanges,
+                        IntegrationChanges,
+                        BackendChanges,
+                        Coding,
+                        UnitTestCasePreparation,
+                        UnittestlogsandDefectFix,
+                        CodeReview,
+                        UnitTestCaseReview,
+                        UnittestResultReview,
+                        UnitTesting,
+                        QAandTestResultReview,
+                        QAandUATSupport,
+                        QATestCasePreparation,
+                        QATestingandDefectFix,
+                        IntegrationTesting,
+                        UATTestingandDefectFix,
+                        QAandUATTesting,
+                        Releasemanagement,
+                        DeploymentSupport,
+                        WarrantySupport,
+                        Support
+
                     })
                 });
 
@@ -117,6 +173,40 @@
                     console.error('Error generating files:', response.statusText);
                 }
             }
+
+    //        function combineddata(){
+
+       
+    //     const FunctionalDesign = parseFloat(localStorage.getItem('FunctionalDesign')) || 0;
+    //     const TechnicalDesign = parseFloat(localStorage.getItem('TechnicalDesign')) || 0;
+
+    //     const AnalysisandDesign1 = parseFloat(localStorage.getItem('AnalysisandDesign')) || 0;
+    //     const Frontendchanges = parseFloat(localStorage.getItem('Frontendchanges')) || 0;
+    //     const IntegrationChanges = parseFloat(localStorage.getItem('IntegrationChanges')) || 0;
+    //     const BackendChanges = parseFloat(localStorage.getItem('BackendChanges')) || 0;
+    //     const Coding = parseFloat(localStorage.getItem('Coding')) || 0;
+    //     const UnitTestCasePreparation = parseFloat(localStorage.getItem('UnitTestCasePreparation')) || 0;
+    //     const UnittestlogsandDefectFix = parseFloat(localStorage.getItem('UnittestlogsandDefectFix')) || 0;
+    //     const CodeReview = parseFloat(localStorage.getItem('CodeReview')) || 0;
+    //     const UnitTestCaseReview = parseFloat(localStorage.getItem('UnitTestCaseReview')) || 0;
+    //     const UnittestResultReview = parseFloat(localStorage.getItem('UnittestResultReview')) || 0;
+    //     const UnitTesting = parseFloat(localStorage.getItem('UnitTesting')) || 0;
+    //     const QAandTestResultReview = parseFloat(localStorage.getItem('QAandTestResultReview')) || 0;
+    //     const QAandUATSupport = parseFloat(localStorage.getItem('QAandUATSupport')) || 0;
+    //     const QATestCasePreparation = parseFloat(localStorage.getItem('QATestCasePreparation')) || 0;
+    //     const QATestingandDefectFix = parseFloat(localStorage.getItem('QATestingandDefectFix')) || 0;
+    //     const IntegrationTesting = parseFloat(localStorage.getItem('IntegrationTesting')) || 0;
+    //     const UATTestingandDefectFix = parseFloat(localStorage.getItem('UATTestingandDefectFix')) || 0;
+    //     const QAandUATTesting = parseFloat(localStorage.getItem('QAandUATTesting')) || 0;
+    //     const Releasemanagement = parseFloat(localStorage.getItem('Releasemanagement')) || 0;
+    //     const DeploymentSupport = parseFloat(localStorage.getItem('DeploymentSupport')) || 0;
+    //     const WarrantySupport = parseFloat(localStorage.getItem('WarrantySupport')) || 0;
+    //     const Support = parseFloat(localStorage.getItem('Support')) || 0;
+
+    //     }
+    //      document.addEventListener('DOMContentLoaded', function () {
+    //     combineddata();
+    // });
 
         function addNewRow() {
             var table = document.getElementById('hardwareSoftwareTable').getElementsByTagName('tbody')[0];

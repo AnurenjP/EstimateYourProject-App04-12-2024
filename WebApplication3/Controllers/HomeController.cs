@@ -8,6 +8,9 @@ using A = DocumentFormat.OpenXml.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Threading;
+//using Project_Est_App.Models;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Collections.Generic;
 
 namespace ProjectEstimationApp.Controllers
 {
@@ -131,7 +134,125 @@ namespace ProjectEstimationApp.Controllers
                         additionalRow++;
                     }
 
+                    var EstimationSheet = package.Workbook.Worksheets.Add("Estimation Details");
+                    EstimationSheet.Cells[1, 1].Value = "Task";
+                    EstimationSheet.Cells[1, 2].Value = "Planed Effort (Hours)";
+                    //EstimationSheet.Cells[1, 3].Value = "Number of Resources";
+                    //EstimationSheet.Cells[1, 4].Value = "Total";
+
+                    int newRow = 2;
+                  
+                        EstimationSheet.Cells[newRow, 1].Value = "Analysis and requirement signoff";
+                        EstimationSheet.Cells[newRow, 2].Value = projectData.Analysisandrequirementsignoff;
+
+                        newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "Functional Design";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.FunctionalDesign;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "Technical Design";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.TechnicalDesign;
+
+                    newRow++;
+
+                    EstimationSheet.Cells[newRow, 1].Value = "Analysis and Design";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.AnalysisandDesign1;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "Frontend changes";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.Frontendchanges;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "Integration Changes";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.IntegrationChanges;
+
+                    newRow++;
+
+                    EstimationSheet.Cells[newRow, 1].Value = "Backend Changes";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.BackendChanges;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "Coding";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.Coding;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "UnitTestCase Preparation";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.UnitTestCasePreparation;
+
+                    newRow++;
+
+                    EstimationSheet.Cells[newRow, 1].Value = "Unittestlogs and DefectFix";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.UnittestlogsandDefectFix;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "Code Review";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.CodeReview;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "Unit Test Case Review";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.UnitTestCaseReview;
+
+                    newRow++;
+
+                    EstimationSheet.Cells[newRow, 1].Value = "Unit test Result Review";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.UnittestResultReview;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "Unit Testing";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.UnitTesting;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "QA and Test Result Review";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.QAandTestResultReview;
+
+                    newRow++;
+
+                    EstimationSheet.Cells[newRow, 1].Value = "QA and UAT Support";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.QAandUATSupport;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "QA Test Case Preparation";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.QATestCasePreparation;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "QATesting and DefectFix";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.QATestingandDefectFix;
+
+                    newRow++;
+
+                    EstimationSheet.Cells[newRow, 1].Value = "Integration Testing";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.IntegrationTesting;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "UATTesting and DefectFix";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.UATTestingandDefectFix;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "QA and UAT Testing";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.QAandUATTesting;
+
+                    newRow++;
+
+                    EstimationSheet.Cells[newRow, 1].Value = "Release Management";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.Releasemanagement;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "Deployment Support";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.DeploymentSupport;
+
+                    newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "Warranty Support";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.WarrantySupport;
+
+                    newRow++;
+
+                    EstimationSheet.Cells[newRow, 1].Value = "Support";
+                    EstimationSheet.Cells[newRow, 2].Value = projectData.Support;
+
+                    newRow++;
                     package.SaveAs(new FileInfo(filePath));
+
+
                 }
             }
             catch (Exception ex)
