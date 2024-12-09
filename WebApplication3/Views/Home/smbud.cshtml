@@ -112,6 +112,48 @@
         const WarrantySupport = parseFloat(localStorage.getItem('WarrantySupport')) || 0;
         const Support = parseFloat(localStorage.getItem('Support')) || 0;
 
+        //resource info
+        const resourcescount = JSON.parse(localStorage.getItem('resources'));
+        const rolevariables = {};
+        for (const [role, data] of Object.entries(resourcescount)) {
+     rolevariables[role] = data.names;
+ 
+     const nameList = document.createElement('ul');
+     data.names.forEach(name => {
+         const listitem = document.createElement('li');
+         listitem.textContent = name;
+         nameList.appendChild(listitem);
+     });
+}
+     const DeliveryManager = (rolevariables['deliveryManager'] || []).join(', ');
+     const SeniorManager = (rolevariables['seniorManager'] || []).join(', ');
+     const Manager = (rolevariables['manager'] || []).join(', ');
+     const ProjectLead = (rolevariables['projectLead'] || []).join(', ');
+     const DevTeamLead = (rolevariables['devTeamLead'] || []).join(', ');
+     const SeniorDeveloper = (rolevariables['seniorDeveloper'] || []).join(', ');
+     const Developer = (rolevariables['developer'] || []).join(', ');
+     const QaTeamLead = (rolevariables['qaTeamLead'] || []).join(', ');
+     const SeniorTester = (rolevariables['seniorTester'] || []).join(', ');
+     const Tester = (rolevariables['tester'] || []).join(', ');
+     const DeploymentTeam = (rolevariables['deploymentTeam'] || []).join(', ');
+
+//ghantt chart data
+    
+
+            const analysisStartDate = localStorage.getItem('analysisStartDate');
+            const analysisEndDate = localStorage.getItem('analysisEndDate');
+            console.log("analysisEndDate :", analysisEndDate);
+            const DesignStartDate = localStorage.getItem('DesignStartDate');
+            const DesignEndDate = localStorage.getItem('DesignEndDate');
+            const DevStart = localStorage.getItem('DevStart');
+            const DevEnd = localStorage.getItem('DevEnd');
+            const testStart = localStorage.getItem('testStart');
+            const testEnd = localStorage.getItem('testEnd');
+            const UATStart = localStorage.getItem('UATStart');
+            const UATEnd = localStorage.getItem('UATEnd');
+            const PRODdates = localStorage.getItem('PRODdates');
+            const BCdates = localStorage.getItem('BCdates');
+
                 const additionalCosts = [];
                 document.querySelectorAll('#optionalBudget tbody tr').forEach(row => {
                     const name = row.querySelector('.editable-cell').innerText;
@@ -154,7 +196,30 @@
                         Releasemanagement,
                         DeploymentSupport,
                         WarrantySupport,
-                        Support
+                        Support,
+                        analysisStartDate,
+                        analysisEndDate,
+                        DesignStartDate,
+                        DesignEndDate,
+                        DevStart,
+                        DevEnd,
+                        testStart,
+                        testEnd,
+                        UATStart,
+                        UATEnd,
+                        PRODdates,
+                        BCdates,
+                        DeliveryManager,
+                        SeniorManager,
+                        Manager,
+                        ProjectLead,
+                        DevTeamLead,
+                        SeniorDeveloper,
+                        Developer,
+                        QaTeamLead,
+                        SeniorTester,
+                        Tester,
+                        DeploymentTeam
 
                     })
                 });
@@ -441,7 +506,7 @@
         </div>
         <div id="totalCostDisplay" class="total-cost-display">Total Cost: ₹0.00</div>
 
-        <button class="btn-sample-budget" onclick="generateBudget()">Generate Budget</button>
+        <button class="btn-sample-budget" onclick="generateBudget()">Generate Report</button>
         <div id="downloadLinks"></div>
     </div>
 </body>

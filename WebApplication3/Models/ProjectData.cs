@@ -56,6 +56,41 @@
         public int WarrantySupport { get; set; }
         public int Support { get; set; }
 
+        public String? AnalysisStartDate { get; set; }
+        public String? AnalysisEndDate { get; set; }
+        public String? DesignStartDate { get; set; }
+        public String? DesignEndDate { get; set; }
+        public String? DevStart { get; set; }
+        public String? DevEnd { get; set; }
+        public String? TestStart { get; set; }
+        public String? TestEnd { get; set; }
+        public String? UATStart { get; set; }
+        public String? UATEnd { get; set; }
+        public String? PRODdates { get; set; }
+        public String? BCdates { get; set; }
+
+        public string? DeliveryManager { get; set; }
+
+        public string? SeniorManager { get; set; }
+
+        public string? Manager { get; set; }
+
+        public string? ProjectLead { get; set; }
+
+        public string? DevTeamLead { get; set; }
+
+        public string? SeniorDeveloper { get; set; }
+
+        public string? Developer { get; set; }
+        public string? QaTeamLead { get; set; }
+
+        public string? SeniorTester { get; set; }
+
+        public string? Tester { get; set; }
+
+        public string? DeploymentTeam { get; set; }
+
+
     }
 
     public class Resource

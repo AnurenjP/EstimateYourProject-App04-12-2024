@@ -13,7 +13,7 @@
 
     <script>
      function timqperiod() {
- 
+ //sum of analysis
      const Analysisandrequirementsignoff = localStorage.getItem('Analysisandrequirementsignoff');
      console.log("Analysisandrequirementsignoff :", Analysisandrequirementsignoff);
  
@@ -22,6 +22,7 @@
      console.log("FunctionalDesign :", FunctionalDesign);
      const TechnicalDesign = parseFloat(localStorage.getItem('TechnicalDesign')) || 0;
      console.log("TechnicalDesign :", TechnicalDesign);
+     //sum of dev
      const Design = FunctionalDesign + TechnicalDesign;
  
      const Frontendchanges = parseFloat(localStorage.getItem('Frontendchanges')) || 0;
@@ -40,7 +41,7 @@
      const CodeReview = parseFloat(localStorage.getItem('CodeReview')) || 0;
      const UnitTestCaseReview = parseFloat(localStorage.getItem('UnitTestCaseReview')) || 0;
      const UnittestResultReview = parseFloat(localStorage.getItem('UnittestResultReview')) || 0;
- 
+ //sum of dev
      const dev = Frontendchanges + IntegrationChanges + QAandTestResultReview + QAandUATSupport + Releasemanagement + BackendChanges + UnitTestCasePreparation + UnittestlogsandDefectFix
          + CodeReview + UnitTestCaseReview + UnittestResultReview;
  
@@ -48,26 +49,52 @@
      const QATestCasePreparation = parseFloat(localStorage.getItem('QATestCasePreparation')) || 0;
      const QATestingandDefectFix = parseFloat(localStorage.getItem('QATestingandDefectFix')) || 0;
      const IntegrationTesting = parseFloat(localStorage.getItem('IntegrationTesting')) || 0;
- 
+ //sum of test
      const Test = QATestCasePreparation + QATestingandDefectFix + IntegrationTesting;
- 
+ //perf testing 
      const UATTestingandDefectFix = parseFloat(localStorage.getItem('UATTestingandDefectFix')) || 0;
- 
+ //prod date
      const DeploymentSupport = parseFloat(localStorage.getItem('DeploymentSupport')) || 0;
- 
+ //bc date
      const WarrantySupport = parseFloat(localStorage.getItem('WarrantySupport')) || 0;
- 
-      const resourceCounts = JSON.parse(localStorage.getItem('resourceCounts')) || {
-              devTeamLead: 0,
-             seniorDeveloper: 0,
-             developer: 0
- 
-         };
 
- 
- 
-         const totalResources = (resourceCounts.devTeamLead || 0) + (resourceCounts.seniorDeveloper || 0) + (resourceCounts.developer || 0);
-         localStorage.setItem('totalResources', totalResources);
+            var resources = JSON.parse(localStorage.getItem('resources')) || {};
+
+            const resourceCounts = {
+                devTeamLead: 0,
+                seniorDeveloper: 0,
+                developer: 0
+
+            };
+            const testresourceCounts = {
+                qaTeamLead: 0,
+                seniorTester: 0,
+                tester: 0
+
+            };
+            for (const resourceType in resources) {
+                if (['devTeamLead', 'seniorDeveloper', 'developer'].includes(resourceType)) {
+                    resourceCounts[resourceType] = resources[resourceType]?.count || 0;
+                    console.log("resourceCounts :", resourceCounts[resourceType]);
+                }
+
+                else if (['qaTeamLead', 'seniorTester', 'tester'].includes(resourceType)) {
+                    testresourceCounts[resourceType] = resources[resourceType]?.count || 0;
+                }
+
+            }
+
+            localStorage.setItem('resourceCounts', JSON.stringify(resourceCounts)) || {};
+
+            const totalResources = (resourceCounts.devTeamLead || 0) + (resourceCounts.seniorDeveloper || 0) + (resourceCounts.developer || 0);
+            localStorage.setItem('totalResources', totalResources);
+            console.log("totalResources :", totalResources);
+
+
+            localStorage.setItem('testresourceCounts', JSON.stringify(testresourceCounts)) || {};
+
+            const testResources = (testresourceCounts.qaTeamLead || 0) + (testresourceCounts.seniorTester || 0) + (testresourceCounts.tester || 0);
+            localStorage.setItem('testResources', testResources);
  
  
      const analysisstart = localStorage.getItem('projectStartDate');
@@ -124,7 +151,7 @@
     // document.getElementById('Analyses').innerText = formattedAnalysisEndDate;
     // localStorage.setItem('analysisEndDate', formattedAnalysisEndDate);
  
-    localStorage.setItem('analysisEndDate', analysisEndDate);
+    localStorage.setItem('analysisEndDate', analysisEndDate.toISOString());
  
     const formattedDesignstartDate = formatedate(DesignstartDate);
     document.getElementById('DesignStart').innerText = `Start: ${formattedDesignstartDate}`;
@@ -156,9 +183,8 @@ if (dev) {
  
     // };
 
- 
- 
-    const totalResources = parseFloat(localStorage.getItem('totalResources')) || 0;
+
+     const totalResources = parseFloat(localStorage.getItem('totalResources')) || 0;
  
     analysisNoOfDays = Math.floor(dev / 8);
     // analysisNoOfDays = analysisNoOfDays - 1;
@@ -183,17 +209,12 @@ if (Test) {
  
         const testStart = new Date(devEnd);
         testStart.setDate(testStart.getDate() + 1);
- 
-          const testresourceCounts = JSON.parse(localStorage.getItem('testresourceCounts')) || {
-            qaTeamLead: 0,
-            seniorTester: 0,
-            tester: 0
- 
-        };
- 
-        const testResources = (testresourceCounts.qaTeamLead || 0) + (testresourceCounts.seniorTester || 0) + (testresourceCounts.tester || 0);
- 
-        analysisNoOfDays = Math.floor(Test / 8);
+
+        const testResources = parseFloat(localStorage.getItem('testResources')) || 0;
+
+
+
+                analysisNoOfDays = Math.floor(Test / 8);
         // analysisNoOfDays = analysisNoOfDays;
         const requiredDays = Math.floor(analysisNoOfDays / testResources);
         const testEnd = new Date(testStart);
@@ -211,7 +232,7 @@ if (Test) {
         // document.getElementById('test').innerText = formattedteststartDate;
         // localStorage.setItem('testdates', formattedteststartDate);
  
-        localStorage.setItem('testEnd', testEnd);
+    localStorage.setItem('testEnd', testEnd.toISOString());
     }
  
     if (UATTestingandDefectFix) {

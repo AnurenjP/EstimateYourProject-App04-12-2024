@@ -11,6 +11,9 @@ using System.Threading;
 //using Project_Est_App.Models;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Collections.Generic;
+using System.Globalization;
+using OfficeOpenXml.Drawing.Chart;
+using OfficeOpenXml.Style;
 
 namespace ProjectEstimationApp.Controllers
 {
@@ -72,6 +75,8 @@ namespace ProjectEstimationApp.Controllers
         [HttpPost]
         public IActionResult GenerateFiles([FromBody] ProjectData projectData)
         {
+
+
             var excelFilePath = GenerateExcel(projectData);
             var pptFilePath = GeneratePowerPoint(projectData);
             var zipFilePath = CreateZipFile(excelFilePath, pptFilePath);
@@ -92,11 +97,15 @@ namespace ProjectEstimationApp.Controllers
             var tempPath = Path.GetTempPath();
             var filePath = Path.Combine(tempPath, "ProjectEstimation.xlsx");
 
+            //edit
+            DateTime projectStartDate = DateTime.ParseExact(projectData.AnalysisStartDate, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+
+
             try
             {
                 using (var package = new ExcelPackage())
                 {
-                    var worksheet = package.Workbook.Worksheets.Add("Project Estimation");
+                    var worksheet = package.Workbook.Worksheets.Add("Budget Details");
                     worksheet.Cells[1, 1].Value = "Resource Type";
                     worksheet.Cells[1, 2].Value = "Cost";
                     worksheet.Cells[1, 3].Value = "Number of Resources";
@@ -111,12 +120,28 @@ namespace ProjectEstimationApp.Controllers
                         worksheet.Cells[row, 4].Value = resource.Total;
                         row++;
                     }
+                    int totalRow = row;
+
+                    worksheet.Cells[totalRow, 3].Value = "Total Cost";
+
+                    worksheet.Cells[totalRow, 4].Formula = $"SUM(D2:D{row - 1})";
+
+                    worksheet.Cells[totalRow, 3, totalRow, 4].Style.Font.Bold = true;
+
+                    row++;
+
 
                     worksheet.Cells[row, 1].Value = "Project Start Date";
-                    worksheet.Cells[row, 2].Value = projectData.ProjectStartDate;
+                    worksheet.Cells[row, 2].Value = FormatDate(projectData.ProjectStartDate);
 
                     worksheet.Cells[row + 1, 1].Value = "Project End Date";
-                    worksheet.Cells[row + 1, 2].Value = projectData.ProjectEndDate;
+                    worksheet.Cells[row + 1, 2].Value = FormatDate(projectData.ProjectEndDate);
+
+
+                    worksheet.Column(1).AutoFit(); // 
+                    worksheet.Column(2).AutoFit(); // 
+                    worksheet.Column(3).AutoFit(); // 
+                    worksheet.Column(4).AutoFit(); // 
 
                     var additionalCostsSheet = package.Workbook.Worksheets.Add("Additional Costs");
                     additionalCostsSheet.Cells[1, 1].Value = "Name";
@@ -133,6 +158,11 @@ namespace ProjectEstimationApp.Controllers
                         additionalCostsSheet.Cells[additionalRow, 4].Value = cost.Total;
                         additionalRow++;
                     }
+
+                    additionalCostsSheet.Column(1).AutoFit(); // 
+                    additionalCostsSheet.Column(2).AutoFit(); // 
+                    additionalCostsSheet.Column(3).AutoFit(); // 
+                    additionalCostsSheet.Column(4).AutoFit(); // 
 
                     var EstimationSheet = package.Workbook.Worksheets.Add("Estimation Details");
                     EstimationSheet.Cells[1, 1].Value = "Task";
@@ -157,7 +187,7 @@ namespace ProjectEstimationApp.Controllers
 
                     EstimationSheet.Cells[newRow, 1].Value = "Analysis and Design";
                     EstimationSheet.Cells[newRow, 2].Value = projectData.AnalysisandDesign1;
-
+                    EstimationSheet.Cells[newRow, 1, newRow, 2].Style.Font.Bold = true;
                     newRow++;
                     EstimationSheet.Cells[newRow, 1].Value = "Frontend changes";
                     EstimationSheet.Cells[newRow, 2].Value = projectData.Frontendchanges;
@@ -174,7 +204,7 @@ namespace ProjectEstimationApp.Controllers
                     newRow++;
                     EstimationSheet.Cells[newRow, 1].Value = "Coding";
                     EstimationSheet.Cells[newRow, 2].Value = projectData.Coding;
-
+                    EstimationSheet.Cells[newRow, 1, newRow, 2].Style.Font.Bold = true;
                     newRow++;
                     EstimationSheet.Cells[newRow, 1].Value = "UnitTestCase Preparation";
                     EstimationSheet.Cells[newRow, 2].Value = projectData.UnitTestCasePreparation;
@@ -200,7 +230,7 @@ namespace ProjectEstimationApp.Controllers
                     newRow++;
                     EstimationSheet.Cells[newRow, 1].Value = "Unit Testing";
                     EstimationSheet.Cells[newRow, 2].Value = projectData.UnitTesting;
-
+                    EstimationSheet.Cells[newRow, 1, newRow, 2].Style.Font.Bold = true;
                     newRow++;
                     EstimationSheet.Cells[newRow, 1].Value = "QA and Test Result Review";
                     EstimationSheet.Cells[newRow, 2].Value = projectData.QAandTestResultReview;
@@ -230,12 +260,12 @@ namespace ProjectEstimationApp.Controllers
                     newRow++;
                     EstimationSheet.Cells[newRow, 1].Value = "QA and UAT Testing";
                     EstimationSheet.Cells[newRow, 2].Value = projectData.QAandUATTesting;
-
+                    EstimationSheet.Cells[newRow, 1, newRow, 2].Style.Font.Bold = true;
                     newRow++;
 
                     EstimationSheet.Cells[newRow, 1].Value = "Release Management";
                     EstimationSheet.Cells[newRow, 2].Value = projectData.Releasemanagement;
-
+                    EstimationSheet.Cells[newRow, 1, newRow, 2].Style.Font.Bold = true;
                     newRow++;
                     EstimationSheet.Cells[newRow, 1].Value = "Deployment Support";
                     EstimationSheet.Cells[newRow, 2].Value = projectData.DeploymentSupport;
@@ -248,8 +278,198 @@ namespace ProjectEstimationApp.Controllers
 
                     EstimationSheet.Cells[newRow, 1].Value = "Support";
                     EstimationSheet.Cells[newRow, 2].Value = projectData.Support;
-
+                    EstimationSheet.Cells[newRow, 1, newRow, 2].Style.Font.Bold = true;
                     newRow++;
+
+                    EstimationSheet.Column(1).AutoFit(); // 
+                    EstimationSheet.Column(2).AutoFit(); // 
+                    EstimationSheet.Column(3).AutoFit(); // 
+
+
+                    // New sheet for project dates
+                    var datesSheet = package.Workbook.Worksheets.Add("Project Dates");
+
+
+                    // Add headers
+                    datesSheet.Cells[1, 1].Value = "Task";
+                    datesSheet.Cells[1, 2].Value = "Start Date";
+                    datesSheet.Cells[1, 3].Value = "End Date";
+
+                    // Assuming the task data is already populated in the worksheet
+                    // Find the project start date (assuming it's the earliest start date)
+                    //DateTime projectStartDate = DateTime.MaxValue;
+                    int lastRow = datesSheet.Dimension.End.Row;
+
+                    for (int roww = 2; row <= lastRow; roww++)
+                    {
+                        if (DateTime.TryParseExact(datesSheet.Cells[roww, 2].Text, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startDate))
+                        {
+                            if (startDate < projectStartDate)
+                            {
+                                projectStartDate = startDate;
+                            }
+                        }
+                    }
+
+
+                    int currentMonth = projectStartDate.Month;
+                    int mergeStartColumn = 4;
+                    for (int i = 0; i < 120; i++) // 120 days for example
+                    {
+                        DateTime currentDate = projectStartDate.AddDays(i);
+                        if (currentDate.Month != currentMonth || i == 119)
+                        {
+                            int mergeEndColumn = 4 + i - 1;
+                            if (i == 119) mergeEndColumn = 4 + i; // Include the last day
+                            datesSheet.Cells[1, mergeStartColumn, 1, mergeEndColumn].Merge = true;
+                            datesSheet.Cells[1, mergeStartColumn, 1, mergeEndColumn].Value = currentDate.AddDays(-1).ToString("MMMM");
+                            datesSheet.Cells[1, mergeStartColumn, 1, mergeEndColumn].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            mergeStartColumn = 4 + i;
+                            currentMonth = currentDate.Month;
+                        }
+                        datesSheet.Cells[4, 4 + i].Value = currentDate.DayOfWeek.ToString().Substring(0, 3); // Add day of the week
+                        datesSheet.Cells[4, 4 + i].Style.Font.Size = 8; // Reduce font size for days
+                        datesSheet.Cells[3, 4 + i].Value = currentDate.Day; // Add day of the month
+                    }
+
+                    //// Add calendar months to the top row and merge cells
+                    //int currentMonth = projectStartDate.Month;
+                    //int mergeStartColumn = 4;
+                    //for (int i = 0; i < 120; i++) // 120 days for example
+                    //{
+                    //    DateTime currentDate = projectStartDate.AddDays(i);
+                    //    if (currentDate.Month != currentMonth || i == 119)
+                    //    {
+                    //        int mergeEndColumn = 4 + i - 1;
+                    //        if (i == 119) mergeEndColumn = 4 + i; // Include the last day
+                    //        datesSheet.Cells[1, mergeStartColumn, 1, mergeEndColumn].Merge = true;
+                    //        datesSheet.Cells[1, mergeStartColumn, 1, mergeEndColumn].Value = currentDate.AddDays(-1).ToString("MMMM");
+                    //        datesSheet.Cells[1, mergeStartColumn, 1, mergeEndColumn].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    //        mergeStartColumn = 4 + i;
+                    //        currentMonth = currentDate.Month;
+                    //    }
+                    //    datesSheet.Cells[4, 4 + i].Value = currentDate.DayOfWeek.ToString().Substring(0, 3); // Add day of the week
+                    //    datesSheet.Cells[4, 4 + i].Style.Font.Size = 8; // Reduce font size for days
+                    //    datesSheet.Cells[3, 4 + i].Value = currentDate.Day; // Add day of the month
+                    //}
+
+
+                    int dateRow = 5;
+
+                    datesSheet.Cells[dateRow, 1].Value = "Analysis";
+                    datesSheet.Cells[dateRow, 2].Value = FormatDate(projectData.AnalysisStartDate);
+                    datesSheet.Cells[dateRow, 3].Value = FormatDate(projectData.AnalysisEndDate);
+
+                    dateRow++;
+                    datesSheet.Cells[dateRow, 1].Value = "Design";
+                    datesSheet.Cells[dateRow, 2].Value = FormatDate(projectData.DesignStartDate);
+                    datesSheet.Cells[dateRow, 3].Value = FormatDate(projectData.DesignEndDate);
+
+
+                    dateRow++;
+                    datesSheet.Cells[dateRow, 1].Value = "Development";
+                    datesSheet.Cells[dateRow, 2].Value = FormatDate(projectData.DevStart);
+                    datesSheet.Cells[dateRow, 3].Value = FormatDate(projectData.DevEnd);
+
+                    dateRow++;
+                    datesSheet.Cells[dateRow, 1].Value = "Testing";
+                    datesSheet.Cells[dateRow, 2].Value = FormatDate(projectData.TestStart);
+                    datesSheet.Cells[dateRow, 3].Value = FormatDate(projectData.TestEnd);
+
+                    dateRow++;
+                    datesSheet.Cells[dateRow, 1].Value = "UAT";
+                    datesSheet.Cells[dateRow, 2].Value = FormatDate(projectData.UATStart);
+                    datesSheet.Cells[dateRow, 3].Value = FormatDate(projectData.UATEnd);
+
+                    dateRow++;
+                    datesSheet.Cells[dateRow, 1].Value = "Production";
+                    datesSheet.Cells[dateRow, 2].Value = FormatDate(projectData.PRODdates);
+                    datesSheet.Cells[dateRow, 3].Value = FormatDate(projectData.PRODdates);
+                    dateRow++;
+                    datesSheet.Cells[dateRow, 1].Value = "BC Date";
+                    datesSheet.Cells[dateRow, 2].Value = FormatDate(projectData.BCdates);
+                    datesSheet.Cells[dateRow, 3].Value = FormatDate(projectData.BCdates);
+
+                    dateRow++;
+                    ApplyConditionalFormatting(datesSheet, dateRow, projectStartDate);
+
+                    // Format the cell sizes
+                    datesSheet.Column(1).AutoFit(); // Task column
+                    datesSheet.Column(2).AutoFit(); // Start Date column
+                    datesSheet.Column(3).AutoFit(); // End Date column
+
+                    for (int i = 4; i < 124; i++) // Adjust the width of the date columns
+                    {
+                        datesSheet.Column(i).Width = 4; // Minimize the width of each cell
+                    }
+
+
+
+                    //resource info
+                    var resourceSheet = package.Workbook.Worksheets.Add("Resource Details");
+                    resourceSheet.Cells[1, 1].Value = "Resource Type";
+                    resourceSheet.Cells[1, 2].Value = "Name";
+
+                    int addRow = 2;
+
+                    resourceSheet.Cells[addRow, 1].Value = "Delivery Manager";
+                    resourceSheet.Cells[addRow, 2].Value = projectData.DeliveryManager;
+
+                    addRow++;
+
+                    resourceSheet.Cells[addRow, 1].Value = "Senior Manager";
+                    resourceSheet.Cells[addRow, 2].Value = projectData.SeniorManager;
+
+                    addRow++;
+
+                    resourceSheet.Cells[addRow, 1].Value = "Manager";
+                    resourceSheet.Cells[addRow, 2].Value = projectData.Manager;
+
+                    addRow++;
+
+                    resourceSheet.Cells[addRow, 1].Value = "Project Lead";
+                    resourceSheet.Cells[addRow, 2].Value = projectData.ProjectLead;
+
+                    addRow++;
+
+                    resourceSheet.Cells[addRow, 1].Value = "Dev TeamLead";
+                    resourceSheet.Cells[addRow, 2].Value = projectData.DevTeamLead;
+
+                    addRow++;
+
+                    resourceSheet.Cells[addRow, 1].Value = "Senior Developer";
+                    resourceSheet.Cells[addRow, 2].Value = projectData.SeniorDeveloper;
+
+                    addRow++;
+
+                    resourceSheet.Cells[addRow, 1].Value = "Developer";
+                    resourceSheet.Cells[addRow, 2].Value = projectData.Developer;
+
+                    addRow++;
+
+                    resourceSheet.Cells[addRow, 1].Value = "QA TeamLead";
+                    resourceSheet.Cells[addRow, 2].Value = projectData.QaTeamLead;
+
+                    addRow++;
+
+                    resourceSheet.Cells[addRow, 1].Value = "Senior Tester";
+                    resourceSheet.Cells[addRow, 2].Value = projectData.SeniorTester;
+
+                    addRow++;
+
+                    resourceSheet.Cells[addRow, 1].Value = "Tester";
+                    resourceSheet.Cells[addRow, 2].Value = projectData.Tester;
+
+                    addRow++;
+
+                    resourceSheet.Cells[addRow, 1].Value = "Deployment Team";
+                    resourceSheet.Cells[addRow, 2].Value = projectData.DeploymentTeam;
+
+                    addRow++;
+                    resourceSheet.Column(1).AutoFit(); //
+                    resourceSheet.Column(2).AutoFit(); // 
+                    resourceSheet.Column(3).AutoFit(); // 
+
                     package.SaveAs(new FileInfo(filePath));
 
 
@@ -262,6 +482,60 @@ namespace ProjectEstimationApp.Controllers
             }
 
             return filePath;
+        }
+
+        //edit
+        private void ApplyConditionalFormatting(ExcelWorksheet sheet, int lastRow, DateTime projectStartDate)
+        {
+            for (int row = 5; row < lastRow; row++)
+            {
+                string taskName = sheet.Cells[row, 1].Text;
+                if (DateTime.TryParse(sheet.Cells[row, 2].Text, out DateTime startDate) &&
+                    DateTime.TryParse(sheet.Cells[row, 3].Text, out DateTime endDate))
+                {
+                    for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+                    {
+                        int col = (date - projectStartDate).Days + 4;
+                        var cell = sheet.Cells[row, col];
+                        cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        cell.Style.Fill.BackgroundColor.SetColor(GetTaskColor(taskName));
+                    }
+                }
+            }
+        }
+
+        ////edit
+
+        //private void ApplyConditionalFormatting(ExcelWorksheet sheet, int lastRow, DateTime projectStartDate)
+        //{
+        //    for (int row = 3; row < lastRow; row++)
+        //    {
+        //        string taskName = sheet.Cells[row, 1].Text;
+        //        DateTime startDate = DateTime.Parse(sheet.Cells[row, 2].Text);
+        //        DateTime endDate = DateTime.Parse(sheet.Cells[row, 3].Text);
+
+        //        for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+        //        {
+        //            int col = (date - projectStartDate).Days + 4;
+        //            var cell = sheet.Cells[row, col];
+        //            cell.Style.Fill.PatternType = ExcelFillStyle.Solid;
+        //            cell.Style.Fill.BackgroundColor.SetColor(GetTaskColor(taskName));
+        //        }
+        //    }
+        //}
+        private System.Drawing.Color GetTaskColor(string taskName)
+        {
+            return taskName switch
+            {
+                "Analysis" => System.Drawing.Color.LightBlue,
+                "Design" => System.Drawing.Color.LightGreen,
+                "Development" => System.Drawing.Color.LightCoral,
+                "Testing" => System.Drawing.Color.LightGoldenrodYellow,
+                "UAT" => System.Drawing.Color.LightPink,
+                "Production" => System.Drawing.Color.LightSkyBlue,
+                "BC Date" => System.Drawing.Color.LightSalmon,
+                _ => System.Drawing.Color.LightGray,
+            };
         }
 
         private string GeneratePowerPoint(ProjectData projectData)
@@ -370,7 +644,38 @@ namespace ProjectEstimationApp.Controllers
 
             return zipFilePath;
         }
+        //formatting date
+            public static string FormatDate(string? date)
+            {
+                if (string.IsNullOrEmpty(date))
+                {
+                    return string.Empty;
+                }
 
+                string[] formats = new[]
+                {
+            "yyyy-MM-dd",
+            "dd-MM-yyyy",
+            "yyyy-MM-ddTHH:mm:ss.fffZ",
+            "ddd MMM dd yyyy HH:mm:ss 'GMT'K (zzz)",
+            "MM/dd/yyyy",
+            "dd/MM/yyyy",
+            "dd-MM-yyyy HH:mm:ss",
+            "yyyy-MM-dd HH:mm:ss",
+            "dd MMM yyyy",
+            "MMM dd, yyyy",
+            "dd MMM yyyy HH:mm:ss 'GMT'K",
+            "ddd MMM dd yyyy HH:mm:ss 'GMT'K (zzz)",
+            "ddd MMM dd yyyy HH:mm: ss 'GMT'K(zzz)"
+        };
+
+                if (DateTime.TryParseExact(date, formats, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
+                {
+                    return parsedDate.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture);
+                }
+                return date;
+            }
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
