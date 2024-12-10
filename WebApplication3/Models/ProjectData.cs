@@ -2,6 +2,8 @@
 {
     public class ProjectData
     {
+        public string ProjectName { get; set; } = string.Empty; // Add this line
+
         public List<Resource> Resources { get; set; } = new List<Resource>();
         public string? ProjectStartDate { get; set; }
         public string? ProjectEndDate { get; set; }

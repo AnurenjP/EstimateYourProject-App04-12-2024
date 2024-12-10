@@ -75,7 +75,7 @@ namespace ProjectEstimationApp.Controllers
         [HttpPost]
         public IActionResult GenerateFiles([FromBody] ProjectData projectData)
         {
-
+            var projectName = projectData.ProjectName ?? "ProjectEstimation"; // Use project name or default
 
             var excelFilePath = GenerateExcel(projectData);
             var pptFilePath = GeneratePowerPoint(projectData);
@@ -131,11 +131,11 @@ namespace ProjectEstimationApp.Controllers
                     row++;
 
 
-                    worksheet.Cells[row, 1].Value = "Project Start Date";
-                    worksheet.Cells[row, 2].Value = FormatDate(projectData.ProjectStartDate);
+                    //worksheet.Cells[row, 1].Value = "Project Start Date";
+                    //worksheet.Cells[row, 2].Value = FormatDate(projectData.ProjectStartDate);
 
-                    worksheet.Cells[row + 1, 1].Value = "Project End Date";
-                    worksheet.Cells[row + 1, 2].Value = FormatDate(projectData.ProjectEndDate);
+                    //worksheet.Cells[row + 1, 1].Value = "Project End Date";
+                    //worksheet.Cells[row + 1, 2].Value = FormatDate(projectData.ProjectEndDate);
 
 
                     worksheet.Column(1).AutoFit(); // 
@@ -158,6 +158,9 @@ namespace ProjectEstimationApp.Controllers
                         additionalCostsSheet.Cells[additionalRow, 4].Value = cost.Total;
                         additionalRow++;
                     }
+                    additionalCostsSheet.Cells[additionalRow, 3].Value = "Total";
+                    additionalCostsSheet.Cells[additionalRow, 4].Formula = $"SUM(D2:D{additionalRow - 1})";
+                    additionalCostsSheet.Cells[additionalRow, 3, additionalRow, 4].Style.Font.Bold = true;
 
                     additionalCostsSheet.Column(1).AutoFit(); // 
                     additionalCostsSheet.Column(2).AutoFit(); // 
@@ -280,6 +283,16 @@ namespace ProjectEstimationApp.Controllers
                     EstimationSheet.Cells[newRow, 2].Value = projectData.Support;
                     EstimationSheet.Cells[newRow, 1, newRow, 2].Style.Font.Bold = true;
                     newRow++;
+                    EstimationSheet.Cells[newRow, 1].Value = "Total";
+                    EstimationSheet.Cells[newRow, 2].Formula = $"SUMIF(A2:A{newRow - 1}, \"Analysis and Design\", B2:B{newRow - 1}) + " +
+                                                                $"SUMIF(A2:A{newRow - 1}, \"Coding\", B2:B{newRow - 1}) + " +
+                                                                $"SUMIF(A2:A{newRow - 1}, \"Unit Testing\", B2:B{newRow - 1}) + " +
+                                                                $"SUMIF(A2:A{newRow - 1}, \"QA and UAT Testing\", B2:B{newRow - 1}) + " +
+                                                                $"SUMIF(A2:A{newRow - 1}, \"Release Management\", B2:B{newRow - 1}) + " +
+                                                                $"SUMIF(A2:A{newRow - 1}, \"Support\", B2:B{newRow - 1})";
+                    EstimationSheet.Cells[newRow, 1, newRow, 2].Style.Font.Bold = true;
+
+
 
                     EstimationSheet.Column(1).AutoFit(); // 
                     EstimationSheet.Column(2).AutoFit(); // 

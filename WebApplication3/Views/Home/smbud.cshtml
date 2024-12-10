@@ -138,7 +138,8 @@
      const DeploymentTeam = (rolevariables['deploymentTeam'] || []).join(', ');
 
 //ghantt chart data
-    
+
+            const projectName = localStorage.getItem('projectName') || 'ProjectEstimation'; // Retrieve project name from local storage
 
             const analysisStartDate = localStorage.getItem('analysisStartDate');
             const analysisEndDate = localStorage.getItem('analysisEndDate');
@@ -168,6 +169,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
+                    projectName, // Include project name
                         resources,
                         projectStartDate,
                         projectEndDate,
@@ -229,7 +231,7 @@
                     const url = window.URL.createObjectURL(blob);
                     const link = document.createElement('a');
                     link.href = url;
-                    link.download = 'ProjectEstimation.zip';
+                    link.download = `${projectName}.zip`; // Use project name as filename
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -283,6 +285,8 @@
             var cell4 = newRow.insertCell(3);
             var cell5 = newRow.insertCell(4);
 
+            var resourceType = document.getElementById('resourceType').value; // Get the selected value
+
             var select = document.createElement('select');
             select.className = 'editable-cell';
             var option1 = document.createElement('option');
@@ -294,16 +298,68 @@
             select.appendChild(option1);
             select.appendChild(option2);
 
+            select.value = resourceType; // Set the selected value
+
             cell1.appendChild(select);
-            cell2.innerHTML = '<input type="text" class="editable-input tool-name">';
-            cell3.innerHTML = '<input type="text" class="editable-input cost">';
-            cell4.innerHTML = '<input type="text" class="editable-input number-of-resources">';
-            cell5.innerHTML = '<span class="total total-cell"></span>';
+
+            // Create input fields with dynamic IDs
+            var toolNameInput = document.createElement('input');
+            toolNameInput.type = 'text';
+            toolNameInput.className = 'editable-input tool-name';
+            toolNameInput.id = resourceType === 'Hardware Cost' ? 'nameofTool' : 'nameOfSoftware';
+
+            var costInput = document.createElement('input');
+            costInput.type = 'text';
+            costInput.className = 'editable-input cost';
+
+            var numberOfResourcesInput = document.createElement('input');
+            numberOfResourcesInput.type = 'text';
+            numberOfResourcesInput.className = 'editable-input number-of-resources';
+
+            var totalSpan = document.createElement('span');
+            totalSpan.className = 'total total-cell';
+
+            cell2.appendChild(toolNameInput);
+            cell3.appendChild(costInput);
+            cell4.appendChild(numberOfResourcesInput);
+            cell5.appendChild(totalSpan);
 
             table.appendChild(newRow);
 
             setupRealTimeCalculation();
         }
+
+        // function addNewRow() {
+        //     var table = document.getElementById('hardwareSoftwareTable').getElementsByTagName('tbody')[0];
+        //     var newRow = table.insertRow();
+
+        //     var cell1 = newRow.insertCell(0);
+        //     var cell2 = newRow.insertCell(1);
+        //     var cell3 = newRow.insertCell(2);
+        //     var cell4 = newRow.insertCell(3);
+        //     var cell5 = newRow.insertCell(4);
+
+        //     var select = document.createElement('select');
+        //     select.className = 'editable-cell';
+        //     var option1 = document.createElement('option');
+        //     option1.value = 'Hardware Cost';
+        //     option1.text = 'Hardware Cost';
+        //     var option2 = document.createElement('option');
+        //     option2.value = 'Software Cost';
+        //     option2.text = 'Software Cost';
+        //     select.appendChild(option1);
+        //     select.appendChild(option2);
+
+        //     cell1.appendChild(select);
+        //     cell2.innerHTML = '<input type="text" class="editable-input tool-name">';
+        //     cell3.innerHTML = '<input type="text" class="editable-input cost">';
+        //     cell4.innerHTML = '<input type="text" class="editable-input number-of-resources">';
+        //     cell5.innerHTML = '<span class="total total-cell"></span>';
+
+        //     table.appendChild(newRow);
+
+        //     setupRealTimeCalculation();
+        // }
     </script>
 </head>
 <body>
