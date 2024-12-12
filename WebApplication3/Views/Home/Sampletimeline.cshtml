@@ -239,11 +239,15 @@ if (Test) {
  
         const UATstart = new Date(localStorage.getItem('testEnd'));
         // const UATstart = new Date(localStorage.getItem('testEnd'));
+                UATstart.setDate(UATstart.getDate() + 1);
+                const UATvalue = UATTestingandDefectFix;
+                const UATEnd = new Date(UATstart);
+                UATEnd.setDate(UATEnd.getDate() + UATvalue);
  
-        UATstart.setDate(UATstart.getDate() + 1);
+        // UATstart.setDate(UATstart.getDate() + 1);
  
-        const UATEnd = new Date(projectEndDate);
-        UATEnd.setDate(UATEnd.getDate() - 7);
+        // const UATEnd = new Date(projectEndDate);
+        //       UATEnd.setDate(UATEnd.getDate() + UATTestingandDefectFix);
  
         const formattedUATStartDate = formatedate(UATstart);
         document.getElementById('UATStart').innerText = `Start: ${formattedUATStartDate}`;
